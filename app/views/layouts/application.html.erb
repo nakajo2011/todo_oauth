@@ -11,6 +11,19 @@
   </head>
 
   <body>
+    <header>
+      <% if current_user %>
+        <%= image_tag current_user.image %>
+        <%= current_user.name %>さん
+        <%= link_to "ログアウト", log_out_path %>
+      <% else  %>
+        <div>
+          <br/>
+          ゲストさん
+          <%= link_to "Googleでログイン", "/auth/google_oauth2", method: :post %>
+        </div>
+      <% end %>
+    </header>
     <%= yield %>
   </body>
 </html>
