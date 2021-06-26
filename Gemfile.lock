@@ -223,7 +223,9 @@ DEPENDENCIES
   byebug
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  omniauth
   omniauth-google-oauth2
+  omniauth-oauth2
   omniauth-rails_csrf_protection
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)

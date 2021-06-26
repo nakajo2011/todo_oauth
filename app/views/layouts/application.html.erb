@@ -13,14 +13,17 @@
   <body>
     <header>
       <% if current_user %>
-        <%= image_tag current_user.image %>
+        <% if current_user.image %>
+          <%= image_tag current_user.image %>
+        <% end %>
         <%= current_user.name %>さん
         <%= link_to "ログアウト", log_out_path %>
       <% else  %>
         <div>
           <br/>
-          ゲストさん
-          <%= link_to "Googleでログイン", "/auth/google_oauth2", method: :post %>
+          ゲストさん<br/>
+          <%= link_to "Googleでログイン", "/auth/google_oauth2", method: :post %><br/>
+          <%= link_to "Mock Providerでログイン", "/auth/mock", method: :post %>
         </div>
       <% end %>
     </header>
