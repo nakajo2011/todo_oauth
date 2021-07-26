@@ -26,6 +26,21 @@ module OmniAuth
         puts "access_token=#{access_token}"
         return {'uid': 1, 'email': "test@example.com", 'name': "nakajo"}
       end
+
+      def authorize_params
+        params = super
+        puts "authroize_params: omniauth.state=#{session["omniauth.state"]}"
+        puts "authroize_params: session=#{session["session_id"]}"
+        params
+      end
+
+      def callback_phase
+
+        puts "callback_phase: omniauth.state=#{session["omniauth.state"]}"
+        puts "callback_phase: session=#{session["session_id"]}"
+        puts "callback_phase: request=#{request.params}"
+        super
+      end
     end
   end
 end
