@@ -41,10 +41,17 @@ module OmniAuth
 
         puts "callback_phase: omniauth.state=#{session["omniauth.state"]}"
         puts "callback_phase: session=#{session["session_id"]}"
-        puts "callback_phase: request=#{request.params}"
+        puts "callback_phase: request=#{request.inspect}"
         puts "callback_phase: token_url=#{client.token_url}"
         super
       end
+
+
+      def build_access_token
+        verifier = request.params["code"]
+        client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(options.auth_token_params))
+      end
+
     end
   end
 end
