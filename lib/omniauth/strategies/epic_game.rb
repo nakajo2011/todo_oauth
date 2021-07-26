@@ -1,6 +1,10 @@
+require 'base64'
+
 module OmniAuth
   module Strategies
     class EpicGame < OmniAuth::Strategies::OAuth2
+      # enable oauth debug log
+
       RAW_INFO_URL = 'https://api.epicgames.dev/epic/oauth/v1/userInfo'
       option :name, 'epic_game'
       option :scope, "basic_profile"
@@ -8,6 +12,7 @@ module OmniAuth
           site: 'https://api.epicgames.dev/',
           authorize_url: "https://www.epicgames.com/id/authorize",
           token_url: "https://api.epicgames.dev/epic/oauth/v1/token"
+
 
       uid { raw_info['uid'] }
 
@@ -32,6 +37,7 @@ module OmniAuth
 
       def authorize_params
         params = super
+        puts "DEBUG=#{ENV['OAUTH_DEBUG']}"
         puts "authroize_params: omniauth.state=#{session["omniauth.state"]}"
         puts "authroize_params: session=#{session["session_id"]}"
         params
@@ -49,12 +55,15 @@ module OmniAuth
         super
       end
 
-
       def build_access_token
         verifier = request.params["code"]
-        client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(options.auth_token_params))
+        token_options = options.auth_token_params.merge({headers: {'Authenticate': 'Basic ' + basic_auth_info}})
+        client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(token_options))
       end
 
+      def basic_auth_info
+        Base64.urlsafe_encode64(options[:client_id] + ":" + options[:client_secret])
+      end
     end
   end
 end
