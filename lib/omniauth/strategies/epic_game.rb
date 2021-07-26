@@ -8,6 +8,7 @@ module OmniAuth
       RAW_INFO_URL = 'https://api.epicgames.dev/epic/oauth/v1/userInfo'
       option :name, 'epic_game'
       option :scope, "basic_profile"
+      options :auth_scheme, :basic_auth
       option :client_options,
           site: 'https://api.epicgames.dev/',
           authorize_url: "https://www.epicgames.com/id/authorize",
@@ -53,16 +54,6 @@ module OmniAuth
         end
         puts "callback_phase: token_url=#{client.token_url}"
         super
-      end
-
-      def build_access_token
-        verifier = request.params["code"]
-        token_options = options.auth_token_params.merge({headers: {'Authenticate': 'Basic ' + basic_auth_info}})
-        client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(token_options))
-      end
-
-      def basic_auth_info
-        Base64.urlsafe_encode64(options[:client_id] + ":" + options[:client_secret])
       end
     end
   end
