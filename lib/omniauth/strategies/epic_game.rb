@@ -41,7 +41,10 @@ module OmniAuth
 
         puts "callback_phase: omniauth.state=#{session["omniauth.state"]}"
         puts "callback_phase: session=#{session["session_id"]}"
-        puts "callback_phase: request=#{request.inspect}"
+        puts "callback_phase: request=#{request.params}"
+        request.each_header do |name, v|
+          puts "callback_phase: request.header=#{name}:#{v}"
+        end
         puts "callback_phase: token_url=#{client.token_url}"
         super
       end
