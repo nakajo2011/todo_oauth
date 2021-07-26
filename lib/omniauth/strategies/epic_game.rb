@@ -8,7 +8,7 @@ module OmniAuth
       RAW_INFO_URL = 'https://api.epicgames.dev/epic/oauth/v1/userInfo'
       option :name, 'epic_game'
       option :scope, "basic_profile"
-      options :auth_scheme, :basic_auth
+      option :auth_scheme, :basic_auth
       option :client_options,
           site: 'https://api.epicgames.dev/',
           authorize_url: "https://www.epicgames.com/id/authorize",
