@@ -1,13 +1,13 @@
 module OmniAuth
   module Strategies
     class EpicGame < OmniAuth::Strategies::OAuth2
-      RAW_INFO_URL = 'epic/oauth/v1/userInfo'
+      RAW_INFO_URL = 'https://api.epicgames.dev/epic/oauth/v1/userInfo'
       option :name, 'epic_game'
       option :scope, "basic_profile"
       option :client_options,
           site: 'https://api.epicgames.dev/',
           authorize_url: "https://www.epicgames.com/id/authorize",
-          token_url: "epic/oauth/v1/token"
+          token_url: "https://api.epicgames.dev/epic/oauth/v1/token"
 
       uid { raw_info['uid'] }
 
@@ -24,6 +24,9 @@ module OmniAuth
 
       def raw_info
         puts "access_token=#{access_token}"
+        response access_token.get(RAW_INFO_URL).response
+        puts "userInfo=#{response.body}"
+
         return {'uid': 1, 'email': "test@example.com", 'name': "nakajo"}
       end
 
