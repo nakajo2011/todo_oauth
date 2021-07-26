@@ -53,6 +53,7 @@ module OmniAuth
           puts "callback_phase: request.header=#{name}:#{v}"
         end
         puts "callback_phase: token_url=#{client.token_url}"
+        puts "callback_phase: auth_scheme=#{options[:auth_scheme]}"
         super
       end
     end
